@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, Divider, Grid, Typography } from '@mui/material';
+import { Divider, Grid, Typography } from '@mui/material';
 import { AuthKitSignInData, Web3AuthModalPack } from '@safe-global/auth-kit';
 import { EthHashInfo } from '@safe-global/safe-react-components';
 import type { SafeEventEmitterProvider, UserInfo } from '@web3auth/base';
@@ -81,7 +81,7 @@ export default function Connect() {
               prefix='eth'
             />
           </Grid>
-          <Grid item md={8} p={4}>
+          {/* <Grid item md={8} p={4}>
             <>
               <Typography variant='h3' color='secondary' fontWeight={700}>
                 Available Safes
@@ -103,7 +103,7 @@ export default function Connect() {
                 </Typography>
               )}
             </>
-          </Grid>
+          </Grid> */}
         </Grid>
       )}
     </>
