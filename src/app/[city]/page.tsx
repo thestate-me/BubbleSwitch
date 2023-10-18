@@ -75,9 +75,9 @@ export default function Page({ params }: { params: { city: string } }) {
                       guide.map((item: any) => (
                         <div
                           key={item.id}
-                          className='m-2 rounded-md border-2 border-gray-100 bg-orange-300 p-2'
+                          className='m-2 rounded-md border-2 border-gray-100 bg-[#D7E86C] p-2'
                         >
-                          <a href={`${city.slug}/${item.slug}`}>
+                          <a href={`${city.slug}/guide/${item.slug}`}>
                             <h2 className='text-xl font-bold'>{item.name}</h2>
                             <p>{item.desc}</p>
                           </a>
@@ -88,9 +88,9 @@ export default function Page({ params }: { params: { city: string } }) {
                       communities.map((item: any) => (
                         <div
                           key={item.id}
-                          className='m-2 rounded-md border-2 border-gray-100 bg-orange-300 p-2'
+                          className='m-2 rounded-md border-2 border-gray-100 bg-[#D7E86C] p-2'
                         >
-                          <a href={`${city.slug}/${item.slug}`}>
+                          <a href={`${city.slug}/community/${item.slug}`}>
                             <h2 className='text-xl font-bold'>{item.name}</h2>
                             <p>{item.desc}</p>
                           </a>
