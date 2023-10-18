@@ -4,15 +4,20 @@ import { CssBaseline, ThemeProvider } from '@mui/material';
 import { SafeThemeProvider } from '@safe-global/safe-react-components';
 import { Loader2 } from 'lucide-react';
 import * as React from 'react';
+import ReactMarkdown from 'react-markdown';
 
 import { supabase } from '@/lib/supabase';
 
 import Connect from '@/app/components/Connect';
 
-export default function Page({ params }: { params: { city: string } }) {
+export default function Page({
+  params,
+}: {
+  params: { city: string; guide: string };
+}) {
   const [loading, setLoading] = React.useState(false);
   const [city, setCity] = React.useState([] as any);
-  const [guide, setguide] = React.useState([] as any);
+  const [currentguide, setcurrentguide] = React.useState([] as any);
   const [communities, setcommunities] = React.useState([] as any);
   React.useEffect(() => {
     if (!params.city) return;
@@ -21,7 +26,6 @@ export default function Page({ params }: { params: { city: string } }) {
 
   const fetchCities = async () => {
     try {
-      console.log(params.city);
       setLoading(true);
       const { data: fetchedCity, error } = await supabase
         .from('cities')
@@ -31,12 +35,13 @@ export default function Page({ params }: { params: { city: string } }) {
       setCity(fetchedCity[0]);
       console.log(fetchedCity);
 
-      const { data: guides, error: error2 } = await supabase
+      const { data: fetchedGuide, error: error2 } = await supabase
         .from('guide')
         .select('*')
-        .eq('city', fetchedCity[0].id);
-      if (!guides || !guides[0]) return '404';
-      setguide(guides);
+        .eq('slug', params.guide);
+      if (!fetchedGuide || !fetchedGuide[0]) return '404';
+      setcurrentguide(fetchedGuide[0]);
+      console.log(fetchedGuide);
 
       const { data: fetchedCommunities, error: error3 } = await supabase
         .from('community')
@@ -44,8 +49,6 @@ export default function Page({ params }: { params: { city: string } }) {
         .eq('city', fetchedCity[0].id);
       if (!fetchedCommunities || !fetchedCommunities[0]) return '404';
       setcommunities(fetchedCommunities);
-      console.log('error', error);
-      console.log('guides', guides);
       if (error) throw error;
       console.log('cities', city);
     } finally {
@@ -67,7 +70,17 @@ export default function Page({ params }: { params: { city: string } }) {
                   </div>
                 ) : (
                   <div className='flex w-full flex-col'>
-                    <h1 className='text-center text-5xl font-bold'></h1>
+                    <a href={`/${city.slug}`}>
+                      <span className='text-left font-bold underline'>
+                        {city.name}
+                      </span>
+                    </a>
+                    <h1 className='text-left text-5xl font-bold'>
+                      {currentguide.name}
+                    </h1>
+                    <ReactMarkdown className='prose'>
+                      {currentguide.body}
+                    </ReactMarkdown>
                   </div>
                 )}
               </div>

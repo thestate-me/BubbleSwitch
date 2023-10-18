@@ -23,7 +23,7 @@ import Connect from '@/app/components/Connect';
 // Before you begin editing, follow all comments with `STARTERCONF`,
 // to customize the default configuration.
 export default function HomePage() {
-  const [loading, setLoading] = React.useState(false);
+  const [loading, setLoading] = React.useState(true);
   const [cities, setCities] = React.useState([] as any);
   React.useEffect(() => {
     fetchCities();
@@ -50,6 +50,7 @@ export default function HomePage() {
           <ThemeProvider theme={safeTheme}>
             <CssBaseline />
             <Connect />
+
             <div className='m-auto flex w-full max-w-[1200px] p-5'>
               <div className='flex h-full w-full'>
                 {loading ? (

@@ -10,7 +10,7 @@ import { supabase } from '@/lib/supabase';
 import Connect from '@/app/components/Connect';
 
 export default function Page({ params }: { params: { city: string } }) {
-  const [loading, setLoading] = React.useState(false);
+  const [loading, setLoading] = React.useState(true);
   const [city, setCity] = React.useState([] as any);
   const [guide, setguide] = React.useState([] as any);
   const [communities, setcommunities] = React.useState([] as any);

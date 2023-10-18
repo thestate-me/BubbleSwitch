@@ -26,6 +26,7 @@
     "@safe-global/auth-kit": "^1.2.1",
     "@safe-global/safe-react-components": "^2.0.6",
     "@supabase/supabase-js": "^2.38.1",
+    "@tailwindcss/typography": "^0.5.10",
     "@web3auth/base": "4.3.0",
     "@web3auth/modal": "4.3.1",
     "@web3auth/openlogin-adapter": "4.3.0",
@@ -37,6 +38,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.11.0",
+    "react-markdown": "^9.0.0",
     "tailwind-merge": "^1.14.0",
     "tailwindcss-animate": "^1.0.7"
   },
