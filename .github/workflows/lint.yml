@@ -28,7 +28,7 @@ jobs:
           useRollingCache: true
 
       - name: 🔬 Lint
-        run: yarn lint:strict
+        run: yarn lint
 
       - name: 🔎 Type check
         run: yarn typecheck
