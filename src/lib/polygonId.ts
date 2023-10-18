@@ -1,5 +1,4 @@
 import { auth, resolver } from '@iden3/js-iden3-auth';
-import { Verifier } from '@iden3/js-iden3-auth/dist/types/auth/auth';
 import { type AuthorizationRequestMessage } from '@iden3/js-iden3-auth/dist/types/types-sdk';
 
 export function KYCAgeCredential(credentialSubject: object) {
@@ -38,7 +37,11 @@ export async function generateQr(
   return request;
 }
 
-export async function verify(id: string, request: AuthorizationRequestMessage) {
+export async function verify(
+  id: string,
+  token: string,
+  request: AuthorizationRequestMessage
+) {
   const ethStateResolver = new resolver.EthStateResolver(
     process.env.POLYGON_VERIFIER_DID || '',
     process.env.POLYGON_CONTRACT_ADDR || ''
@@ -48,7 +51,13 @@ export async function verify(id: string, request: AuthorizationRequestMessage) {
     [process.env.POLYGON_RESOLVER || 'polygon:mumbai']: ethStateResolver,
   };
 
-  const verifier = await Verifier.newVerifier({
+  const verifier = await auth.Verifier.newVerifier({
     stateResolver,
   });
+
+  const response = await verifier.fullVerify(token, request, {
+    acceptedStateTransitionDelay: 5 * 60 * 1000,
+  });
+
+  return response;
 }
