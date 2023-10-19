@@ -23,7 +23,7 @@ export async function generateQr(
   const request = auth.createAuthorizationRequest(
     reason,
     process.env.VERIFIER_DID || '',
-    `https://${process.env.VERCEL_URL}/api/polygon/callback`
+    `${process.env.BASE_URL}api/polygon/callback`
   );
 
   request.id = id;
