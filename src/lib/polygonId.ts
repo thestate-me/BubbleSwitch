@@ -1,6 +1,5 @@
-import { cacheLoader } from '@0xpolygonid/js-sdk';
+import { AuthorizationRequestMessage, cacheLoader } from '@0xpolygonid/js-sdk';
 import { auth, resolver } from '@iden3/js-iden3-auth';
-import { type AuthorizationRequestMessage } from '@iden3/js-iden3-auth/dist/types/types-sdk';
 
 export function KYCAgeCredential(credentialSubject: object) {
   return {
@@ -58,7 +57,7 @@ export async function verify(
   const verifier = await auth.Verifier.newVerifier({
     stateResolver,
     documentLoader,
-    circuitsDir: '../constant/keys',
+    circuitsDir: 'src/constant/keys',
   });
 
   const response = await verifier.fullVerify(token, request, {
