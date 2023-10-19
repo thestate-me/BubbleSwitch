@@ -1,4 +1,4 @@
-import { AuthorizationRequestMessage, cacheLoader } from '@0xpolygonid/js-sdk';
+import { AuthorizationRequestMessage } from '@0xpolygonid/js-sdk';
 import { auth, resolver } from '@iden3/js-iden3-auth';
 
 export function KYCAgeCredential(credentialSubject: object) {
@@ -22,7 +22,7 @@ export async function generateQr(
 ) {
   const request = auth.createAuthorizationRequest(
     reason,
-    process.env.VERIFIER_DID || '',
+    process.env.POLYGON_VERIFIER_DID || '',
     `${process.env.BASE_URL}api/polygon/callback`
   );
 
@@ -42,7 +42,7 @@ export async function verify(
   request: AuthorizationRequestMessage
 ) {
   const ethStateResolver = new resolver.EthStateResolver(
-    process.env.POLYGON_VERIFIER_DID || '',
+    process.env.POLYGON_RPC_URL || '',
     process.env.POLYGON_CONTRACT_ADDR || ''
   );
 
@@ -50,18 +50,14 @@ export async function verify(
     [process.env.POLYGON_RESOLVER || 'polygon:mumbai']: ethStateResolver,
   };
 
-  const documentLoader = cacheLoader({
-    ipfsNodeURL: 'https://ipfs.io',
-  });
-
   const verifier = await auth.Verifier.newVerifier({
     stateResolver,
-    documentLoader,
-    circuitsDir: 'src/constant/keys',
+    circuitsDir: 'keys',
   });
 
   const response = await verifier.fullVerify(token, request, {
     acceptedStateTransitionDelay: 5 * 60 * 1000,
+    acceptedProofGenerationDelay: 1 * 365 * 24 * 60 * 60 * 1000,
   });
 
   return response;

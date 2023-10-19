@@ -1,41 +1,27 @@
 import { AuthorizationRequestMessage } from '@0xpolygonid/js-sdk';
 import { NextResponse } from 'next/server';
 
-import { verify } from '@/lib/polygonId';
+import { generateQr, verify } from '@/lib/polygonId';
 
 export async function POST(req: Request) {
-  const token = (await req.text()) || '';
-  console.log(token);
+  const token = Buffer.from(await req.arrayBuffer()).toString() || '';
 
-  const request: AuthorizationRequestMessage = {
-    id: 'asdf',
-    thid: 'asdf',
-    from: '',
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    typ: 'application/iden3comm-plain-json',
-    type: 'https://iden3-communication.io/authorization/1.0/request',
-    body: {
-      reason: 'text reason',
-      message: '',
-      callbackUrl: 'https://nomad-guild.vercel.app/api/polygon/callback',
-      scope: [
-        {
-          id: 1,
-          circuitId: 'credentialAtomicQuerySigV2',
-          query: {
-            allowedIssuers: ['*'],
-            type: 'KYCAgeCredential',
-            context:
-              'https://raw.githubusercontent.com/iden3/claim-schema-vocab/main/schemas/json-ld/kyc-v3.json-ld',
-            credentialSubject: { birthday: { $lt: 20230101 } },
-          },
-        },
-      ],
-    },
-  };
+  const request: AuthorizationRequestMessage = await generateQr(
+    'asdf',
+    'text reason',
+    {
+      birthday: {
+        // users must be born before this year
+        // birthday is less than Jan 1, 2023
+        $lt: 20230101,
+      },
+    }
+  );
 
-  const response = await verify(token, request);
+  const response = await verify(
+    token, // 'eyJhbGciOiJncm90aDE2IiwiY2lyY3VpdElkIjoiYXV0aFYyIiwiY3JpdCI6WyJjaXJjdWl0SWQiXSwidHlwIjoiYXBwbGljYXRpb24vaWRlbjMtemtwLWpzb24ifQ.eyJpZCI6ImNjMmQxYWFiLWI0M2YtNGZkZi05ZGRjLWFkNjZmZmQ5YWY4MyIsInR5cCI6ImFwcGxpY2F0aW9uL2lkZW4zLXprcC1qc29uIiwidHlwZSI6Imh0dHBzOi8vaWRlbjMtY29tbXVuaWNhdGlvbi5pby9hdXRob3JpemF0aW9uLzEuMC9yZXNwb25zZSIsInRoaWQiOiJhc2RmIiwiYm9keSI6eyJkaWRfZG9jIjpudWxsLCJtZXNzYWdlIjoiIiwic2NvcGUiOlt7InByb29mIjp7InBpX2EiOlsiMTM2MTYwNDUxNTk5MDk0MTk5ODA4NDA2MDY1Mjc1NDU3Njg1NDg3ODcwMjc5ODkxODcxMzM1MDY4OTIwNTY5MjY4NDQ4OTA4ODM1MDkiLCIxNDA5NjkwMjkwMTcxMjE5MjUxODA3NTQ4OTI4MzMwMzEzNzMzNDM2Mjc5OTkxOTk1Njk3ODYzMjc5MTYxNTMxNDkyMDk3NjQxMDk4MiIsIjEiXSwicGlfYiI6W1siMTU5NDM4NjA0MjQzOTU4MjYzOTEzMjQzMTAzNjk1Nzg5MjE0ODExMDgzOTI1MTIzNzE5NjE2MzQ5NTQ4NjE5NTUwOTYwMDM5MTc3NTYiLCI2MDI3MDI5OTE5MTEwMjMxNjE4MTE5NDMxOTQ2NTQxOTYwNTUyODQzNDUxODU2NjMyMzUxNDEwMjk2NDQzMzQ1NTYzODQzNzExMjkxIl0sWyIyMzY4NDk3NzkxNzc2NDk5NjA5NTA1ODA2MTQwNjYyNTQwNzY1Mjg0NzY2NDgwNjA2ODQ3MzYyNDQyNDkzNTU4NjEyMzc3MzE1NTExIiwiODAwNTU2MTgzMDI3OTgxMjcwNzA3MDk2NzY2Mzk1NjI0NjcyNDYzOTM0NjMyMDAzOTU3MDY0NDIxNTE4NTYyNTM5ODM2OTY0MTMwNCJdLFsiMSIsIjAiXV0sInBpX2MiOlsiMTc4MDA4MzYzODk2NzE3NjgyNTk1NTk1MzY4Nzg4NzczMjY1NDM2NTAxNTk2NDUxMDE3NzkxNzI5ODIyMDQ2NTA1MTUzMTE0MzE5OTMiLCIxODg0Nzc0OTkzMjE3MDkwMTkyNzM2MTY4NDEyNDA5MTYzMTEzMjY2OTc3Mjc2MjM0MzkwMTc3MjEwMTE2MzY0Nzg1MDkwNjc0MzczIiwiMSJdLCJwcm90b2NvbCI6Imdyb3RoMTYiLCJjdXJ2ZSI6ImJuMTI4In0sInB1Yl9zaWduYWxzIjpbIjEiLCIxNDYyMDQyOTMzMTcyNjU2ODY3MDEwNTkwNTQ1NjIzMTc5OTQ5MDgwNDA0NjgzNjEwNTUyNDc2NTE3NDQ1MjEyMjUyMjQ4OTM0NiIsIjEzODQ4NDk5MTQwMjc5MjczMDA1NTIxODczOTUzMDczNTY4MDU3OTE3OTg0NTIwNDc0MDUzNTM0Mjg1Njk3ODQ0MTE4ODE1MjcyNjIyIiwiMSIsIjI1OTc4OTk4Njg0MTkxNjEwNzQ0NDM2MTg3MTE1MTEyMjA2ODYwMDUxNTIxMDc4NzA1Mjg0NDIyNTE5OTU5OTIwODYxMDU3NTM4IiwiMSIsIjk4MTU3NjQxODg3MDgwNTIwNTYxNDk5Mjg1ODAzNDUyOTQ5Mzc0OTc0NDM3NzY0NDM2ODA2NjAyMTY0MjE4NzcxMjcyNjQ4MzYzNjIiLCIxNjk3NzM3MDU0IiwiNzQ5NzczMjc2MDA4NDgyMzEzODU2NjMyODAxODE0NzYzMDc2NTciLCIwIiwiMjAzNzYwMzM4MzIzNzExMDkxNzc2ODMwNDg0NTYwMTQ1MjU5MDUxMTkxNzM2NzQ5ODU4NDM5MTU0NDU2MzQ3MjYxNjc0NTA5ODk2MzAiLCIwIiwiMiIsIjIwMjMwMTAxIiwiMCIsIjAiLCIwIiwiMCIsIjAiLCIwIiwiMCIsIjAiLCIwIiwiMCIsIjAiLCIwIiwiMCIsIjAiLCIwIiwiMCIsIjAiLCIwIiwiMCIsIjAiLCIwIiwiMCIsIjAiLCIwIiwiMCIsIjAiLCIwIiwiMCIsIjAiLCIwIiwiMCIsIjAiLCIwIiwiMCIsIjAiLCIwIiwiMCIsIjAiLCIwIiwiMCIsIjAiLCIwIiwiMCIsIjAiLCIwIiwiMCIsIjAiLCIwIiwiMCIsIjAiLCIwIiwiMCIsIjAiLCIwIiwiMCIsIjAiLCIwIiwiMCIsIjAiLCIwIiwiMCIsIjAiLCIwIl0sImlkIjoxLCJjaXJjdWl0SWQiOiJjcmVkZW50aWFsQXRvbWljUXVlcnlTaWdWMiJ9XX0sImZyb20iOiJkaWQ6cG9seWdvbmlkOnBvbHlnb246bXVtYmFpOjJxS05OOVVuNUxSWW5BM3doTHQ2c2l1TjNCZkhCRFc4QnNwcnN2WmQzdSIsInRvIjoiZGlkOnBvbHlnb25pZDpwb2x5Z29uOm11bWJhaToycUR5eTFrRW8yQVljUDNSVDRYR2VhN0J0eHNZMjg1c3pnNnlQOVNQcnMifQ.eyJwcm9vZiI6eyJwaV9hIjpbIjc3Njk5MjM4MTYxODU4MzY0NzE3MTc0MDEwMjExODk1NzQxMjUzMDIxODM3NTg5NjU3MDc5MDMwNzQ5MTEwNjY2ODIxMjQzMTU1NDUiLCI4MzU1NDU3Mjc2MzI0ODMyNTUxMzMwOTIyNjU3MjQzNzg4NTIyNzcxNzY3Mjk2OTI0ODQyNzU2MTQzNzM3MTY0NTE4OTgyMDAwNDQyIiwiMSJdLCJwaV9iIjpbWyIyODQyNjY4NzM1NzY2MDYzNjY4NDIxNTA1NjYzMTM1MDg1NTQ5MTE2MzkwMTExNDQyMzMwMTI5MTk3NDE1NTQ0MTM5NzU2MTY2NjAyIiwiNDE3NTgyNjcyMTc4MzcwMTU4OTgyNzkzMzk2MzM3NjIzMTg5OTEyODAwMzQwNzc4MDY2MDI5MDY4MDMxNzIwODE4MjU5MDU0MjY5NyJdLFsiNDc0MTY5NjM0MjY3MjE5ODQ5MzA1NjA1NzIyNjI3OTEyMjg4NjY4OTQ1NzEyOTY4Mzc2NjM3NzAxNzg5MTU1OTM3MTk2NDcyMzQ2OSIsIjQ0NjUxNzUxMDY1Nzg2ODYwOTAyODY3MDAzMjYzNTIyMzUxMjMyMjEzMjUwMDE5MTY3OTMxNjI1OTM2MDU0OTE4MjUzNzQ3ODMyMzgiXSxbIjEiLCIwIl1dLCJwaV9jIjpbIjM0ODA2NDU1MDAzNTU3MDQxMDYzNDU4NjEwOTk4OTg4MjMxNTA1ODczNDkxMzcwMjA4NTE5NzA4NTExNTA2NDc0NzkyNDQ0NTg1NyIsIjU4MDY4MTk2OTU2MjI5MDY3ODYzMDEzNjgxNzA4ODI0NDM0NDMzNzEwNTQ0ODM5Njc0NDYzMDA2ODU4OTE3MDQwNzYwMjM1MjU1MzMiLCIxIl0sInByb3RvY29sIjoiZ3JvdGgxNiIsImN1cnZlIjoiYm4xMjgifSwicHViX3NpZ25hbHMiOlsiMTQ2MjA0MjkzMzE3MjY1Njg2NzAxMDU5MDU0NTYyMzE3OTk0OTA4MDQwNDY4MzYxMDU1MjQ3NjUxNzQ0NTIxMjI1MjI0ODkzNDYiLCI2ODY0MDk5MzYzNDE3NjQ3NjM0MDk3Njg3MDAzODYyMzM4NDY0ODc4OTg2MzgxNDE3NzQxNTIwOTEwNjI0MzU1NDM2NTk5NjQ0NDgyIiwiMTQ1OTE1NDQxODk5NjUxNDE3MDUwMTk1OTA4MzE1MDI0MDg1ODEzMDI3MjgzNTY3NzU1NzQzMjk5NjAzNDI0ODc1MjIxNDgzNzc3NDkiXX0',
+    request
+  );
 
   console.log(response);
   return NextResponse.json(response);
