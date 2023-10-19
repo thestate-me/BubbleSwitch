@@ -39,7 +39,6 @@ export async function generateQr(
 }
 
 export async function verify(
-  id: string,
   token: string,
   request: AuthorizationRequestMessage
 ) {
