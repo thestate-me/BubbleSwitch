@@ -1,3 +1,4 @@
+import { cacheLoader } from '@0xpolygonid/js-sdk';
 import { auth, resolver } from '@iden3/js-iden3-auth';
 import { type AuthorizationRequestMessage } from '@iden3/js-iden3-auth/dist/types/types-sdk';
 
@@ -51,8 +52,14 @@ export async function verify(
     [process.env.POLYGON_RESOLVER || 'polygon:mumbai']: ethStateResolver,
   };
 
+  const documentLoader = cacheLoader({
+    ipfsNodeURL: 'https://ipfs.io',
+  });
+
   const verifier = await auth.Verifier.newVerifier({
     stateResolver,
+    documentLoader,
+    circuitsDir: '../constant/keys',
   });
 
   const response = await verifier.fullVerify(token, request, {

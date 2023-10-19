@@ -18,6 +18,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "@0xpolygonid/js-sdk": "^1.2.2",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@iden3/js-iden3-auth": "^1.0.3",
