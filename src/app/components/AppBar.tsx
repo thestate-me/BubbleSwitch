@@ -1,9 +1,9 @@
 import {
-  AppBar as MuiAppBar,
   Box,
   Button,
-  styled,
+  AppBar as MuiAppBar,
   Typography,
+  styled,
 } from '@mui/material';
 import { UserInfo } from '@web3auth/base';
 import Link from 'next/link';
@@ -28,7 +28,7 @@ const AppBar = ({
       <div className='z-10 m-auto flex w-full max-w-[1300px] items-center justify-between px-10'>
         <Typography variant='h3' pl={4} fontWeight={700} className='flex'>
           <Link href='/' className='hover:underline'>
-            Nomad guides{' '}
+            Nomad guild{' '}
           </Link>
           {city && city.slug ? (
             <div className='flex'>

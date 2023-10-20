@@ -93,27 +93,31 @@ export default function Page({
                         You should buy subscription to see the link
                       </div>
                     ) : community.sismo_group ? (
-                      <div className='flex flex-col text-center text-3xl font-bold'>
+                      <div className='mt-5 flex flex-col text-center text-3xl font-bold'>
                         Verify your identity to see the link
-                        <Sismo
-                          groupId={community.id}
-                          callback={async (response: SismoConnectResponse) => {
-                            const res = await fetch(`/api/sismo/verify`, {
-                              method: 'POST',
-                              headers: {
-                                'Content-Type': 'application/json',
-                              },
-                              body: JSON.stringify({
-                                communityId: community.sismo_group,
-                                sismo: response,
-                              }),
-                            }).then((res) => res.json());
-                            if (res && res.result === 'success')
-                              setallowLink(true);
+                        <div className='m-auto mt-5 max-w-[300px]'>
+                          <Sismo
+                            groupId={community.id}
+                            callback={async (
+                              response: SismoConnectResponse
+                            ) => {
+                              const res = await fetch(`/api/sismo/verify`, {
+                                method: 'POST',
+                                headers: {
+                                  'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify({
+                                  communityId: community.sismo_group,
+                                  sismo: response,
+                                }),
+                              }).then((res) => res.json());
+                              if (res && res.result === 'success')
+                                setallowLink(true);
 
-                            console.log(response);
-                          }}
-                        ></Sismo>
+                              console.log(response);
+                            }}
+                          />
+                        </div>
                       </div>
                     ) : community.nsfw ? (
                       <div className='text-center text-3xl font-bold'>
