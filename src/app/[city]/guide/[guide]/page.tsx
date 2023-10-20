@@ -61,7 +61,7 @@ export default function Page({
         {(safeTheme) => (
           <ThemeProvider theme={safeTheme}>
             <CssBaseline />
-            <Connect />
+            <Connect city={city} />
             <div className='m-auto flex w-full max-w-[1200px] p-5'>
               <div className='flex h-full w-full'>
                 {loading ? (
@@ -70,15 +70,15 @@ export default function Page({
                   </div>
                 ) : (
                   <div className='flex w-full flex-col'>
-                    <a href={`/${city.slug}`}>
+                    {/* <a href={`/${city.slug}`}>
                       <span className='text-left font-bold underline'>
                         {city.name}
                       </span>
-                    </a>
+                    </a> */}
                     <h1 className='text-left text-5xl font-bold'>
                       {currentguide.name}
                     </h1>
-                    <ReactMarkdown className='prose'>
+                    <ReactMarkdown className='prose max-w-fullc mt-4'>
                       {currentguide.body}
                     </ReactMarkdown>
                   </div>
