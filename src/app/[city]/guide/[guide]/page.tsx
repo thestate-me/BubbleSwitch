@@ -78,7 +78,7 @@ export default function Page({
                     <h1 className='text-left text-5xl font-bold'>
                       {currentguide.name}
                     </h1>
-                    <ReactMarkdown className='prose max-w-fullc mt-4'>
+                    <ReactMarkdown className='prose mt-4 max-w-full'>
                       {currentguide.body}
                     </ReactMarkdown>
                   </div>

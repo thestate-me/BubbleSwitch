@@ -26,10 +26,18 @@ const AppBar = ({
   return (
     <StyledAppBar position='static' className='m-auto' color='default'>
       <div className='m-auto flex w-full max-w-[1300px] items-center justify-between px-10'>
-        <Typography variant='h3' pl={4} fontWeight={700}>
-          <Link href='/'>Nomad guides</Link>
-          {city ? (
-            <Link href={`/${city.slug}`}>{` / ${city.name}`}</Link>
+        <Typography variant='h3' pl={4} fontWeight={700} className='flex'>
+          <Link href='/' className='hover:underline'>
+            Nomad guides{' '}
+          </Link>
+          {city && city.slug ? (
+            <div className='flex'>
+              <div className='mx-2'>/</div>
+              <Link
+                href={`/${city.slug}`}
+                className=' hover:underline'
+              >{`${city.name}`}</Link>
+            </div>
           ) : null}
         </Typography>
 
