@@ -36,7 +36,7 @@ export default function Page({
       console.log(fetchedCity);
 
       const { data: fetchedGuide, error: error2 } = await supabase
-        .from('guide')
+        .from('guides')
         .select('*')
         .eq('slug', params.guide);
       if (!fetchedGuide || !fetchedGuide[0]) return '404';

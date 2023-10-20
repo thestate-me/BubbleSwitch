@@ -32,16 +32,17 @@ export default function Page({ params }: { params: { city: string } }) {
       console.log(fetchedCity);
 
       const { data: guides, error: error2 } = await supabase
-        .from('guide')
+        .from('guides')
         .select('*')
         .eq('city', fetchedCity[0].id);
-      if (!guides || !guides[0]) return '404';
+      // if (!guides || !guides[0]) return '404';
       setguide(guides);
 
       const { data: fetchedCommunities, error: error3 } = await supabase
         .from('community')
         .select('*')
         .eq('city', fetchedCity[0].id);
+      console.log('fetchedCommunities', fetchedCommunities);
       if (!fetchedCommunities || !fetchedCommunities[0]) return '404';
       setcommunities(fetchedCommunities);
       console.log('error', error);
@@ -70,32 +71,38 @@ export default function Page({ params }: { params: { city: string } }) {
                     <h1 className='text-center text-5xl font-bold'>
                       {city.name}
                     </h1>
-                    <h2 className='text-xl font-bold'>Guides:</h2>
-                    {guide.length &&
-                      guide.map((item: any) => (
-                        <div
-                          key={item.id}
-                          className='m-2 rounded-md border-2 border-gray-100 bg-[#D7E86C] p-2'
-                        >
-                          <a href={`${city.slug}/guide/${item.slug}`}>
-                            <h2 className='text-xl font-bold'>{item.name}</h2>
-                            <p>{item.desc}</p>
-                          </a>
-                        </div>
-                      ))}
-                    <h2 className='text-xl font-bold'>Communities:</h2>
-                    {communities.length &&
-                      communities.map((item: any) => (
-                        <div
-                          key={item.id}
-                          className='m-2 rounded-md border-2 border-gray-100 bg-[#D7E86C] p-2'
-                        >
-                          <a href={`${city.slug}/community/${item.slug}`}>
-                            <h2 className='text-xl font-bold'>{item.name}</h2>
-                            <p>{item.desc}</p>
-                          </a>
-                        </div>
-                      ))}
+                    {guide.length ? (
+                      <div>
+                        <h2 className='text-xl font-bold'>Guides:</h2>
+                        {guide.map((item: any) => (
+                          <div
+                            key={item.id}
+                            className='m-2 rounded-md border-2 border-gray-100 bg-[#D7E86C] p-2'
+                          >
+                            <a href={`${city.slug}/guide/${item.slug}`}>
+                              <h2 className='text-xl font-bold'>{item.name}</h2>
+                              <p>{item.desc}</p>
+                            </a>
+                          </div>
+                        ))}
+                      </div>
+                    ) : null}
+                    {communities.length ? (
+                      <div>
+                        <h2 className='text-xl font-bold'>Communities:</h2>
+                        {communities.map((item: any) => (
+                          <div
+                            key={item.id}
+                            className='m-2 rounded-md border-2 border-gray-100 bg-[#D7E86C] p-2'
+                          >
+                            <a href={`${city.slug}/community/${item.slug}`}>
+                              <h2 className='text-xl font-bold'>{item.name}</h2>
+                              <p>{item.desc}</p>
+                            </a>
+                          </div>
+                        ))}
+                      </div>
+                    ) : null}
                   </div>
                 )}
               </div>

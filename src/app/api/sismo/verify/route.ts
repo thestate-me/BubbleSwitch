@@ -8,6 +8,8 @@ import { NextResponse } from 'next/server';
 
 export async function POST(req: Request) {
   const sismoConnectResponse = await req.json();
+  console.log(sismoConnectResponse);
+  // const {response: }
 
   const config = {
     appId: process.env.NEXT_PUBLIC_SISMO_APP_ID || '',

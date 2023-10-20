@@ -32,7 +32,7 @@ export default function Page({ params }: { params: { city: string } }) {
       console.log(fetchedCity);
 
       const { data: guides, error: error2 } = await supabase
-        .from('guide')
+        .from('guides')
         .select('*')
         .eq('city', fetchedCity[0].id);
       if (!guides || !guides[0]) return '404';
