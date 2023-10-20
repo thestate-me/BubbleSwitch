@@ -102,7 +102,7 @@ export default function Page({
                         Verify your identity to see the link
                         <div className='m-auto mt-5 max-w-[300px]'>
                           <Sismo
-                            groupId={community.id}
+                            groupId={community.sismo_group}
                             callback={async (
                               response: SismoConnectResponse
                             ) => {
