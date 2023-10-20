@@ -11,6 +11,7 @@ import { supabase } from '@/lib/supabase';
 import Connect from '@/app/components/Connect';
 import QrNSFW from '@/app/components/PolygonNSFW';
 import Sismo from '@/app/components/Sismo';
+import Ticket from '@/app/components/Ticket';
 
 export default function Page({
   params,
@@ -129,17 +130,16 @@ export default function Page({
                       </div>
                     ) : (
                       <div className='mt-4 text-center'>
-                        <a href={community.url} target='_blank'>
+                        {/* <a href={community.url} target='_blank'>
                           {community.url}
-                        </a>
+                        </a> */}
+                        <Ticket url={community.url} />
                       </div>
                     )}
                     {allowLink && (
                       <div className='mt-4 text-center'>
                         Great! Here is the link!
-                        <a href={community.url} target='_blank'>
-                          {community.url}
-                        </a>
+                        <Ticket url={community.url} />
                       </div>
                     )}
                   </div>
