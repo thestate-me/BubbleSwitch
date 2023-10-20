@@ -112,7 +112,7 @@ export default function Page({
                                   'Content-Type': 'application/json',
                                 },
                                 body: JSON.stringify({
-                                  communityId: community.sismo_group,
+                                  communityId: community.id,
                                   sismo: response,
                                 }),
                               }).then((res) => res.json());
