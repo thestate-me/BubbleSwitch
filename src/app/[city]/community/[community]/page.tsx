@@ -65,6 +65,11 @@ export default function Page({
       setLoading(false);
     }
   };
+  const [userAddress, setuserAddress] = React.useState([] as any);
+  React.useEffect(() => {
+    const addr = localStorage.getItem('userAddress');
+    if (addr) setuserAddress(addr);
+  }, []);
   const [allowLink, setallowLink] = React.useState(false);
   return (
     <React.StrictMode>
@@ -75,7 +80,7 @@ export default function Page({
             <Connect city={city} />
             <div className='m-auto flex w-full max-w-[1200px] p-5'>
               <div className='flex h-full w-full'>
-                {loading ? (
+                {loading && community ? (
                   <div className='flex h-full w-full items-center justify-center'>
                     <Loader2 className='mr-2 mt-20 h-10 w-10 animate-spin' />
                   </div>
@@ -124,9 +129,13 @@ export default function Page({
                         You should be 18+ to see the link
                         {/* // TODO: прокинь сюда юзера  */}
                         {/* eslint-disable-next-line no-constant-condition */}
-                        {'user' == 'user' ? (
-                          <QrNSFW userAddr='0x3B04F107176B54Fc5697f9b65Fa6dE14D43d67e9'></QrNSFW>
-                        ) : null}
+                        <div>
+                          {userAddress ? (
+                            <QrNSFW userAddr='0x3B04F107176B54Fc5697f9b65Fa6dE14D43d67e9' />
+                          ) : (
+                            'Login first'
+                          )}
+                        </div>
                       </div>
                     ) : (
                       <div className='mt-4 text-center'>
@@ -136,12 +145,12 @@ export default function Page({
                         <Ticket url={community.url} />
                       </div>
                     )}
-                    {allowLink && (
+                    {/* {allowLink && (
                       <div className='mt-4 text-center'>
                         Great! Here is the link!
                         <Ticket url={community.url} />
                       </div>
-                    )}
+                    )} */}
                   </div>
                 )}
               </div>
