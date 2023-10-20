@@ -13,7 +13,7 @@ export default function Sismo() {
       }}
       claims={[
         {
-          groupId: '0xab882512e97b60cb2295a1c190c47569',
+          groupId: '0x0f800ff28a426924cbe66b67b9f837e2',
         },
       ]}
       onResponse={(response: SismoConnectResponse) => {

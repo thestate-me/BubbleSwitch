@@ -4,6 +4,10 @@ const nextConfig = {
     dirs: ['src'],
   },
 
+  experimental: {
+    serverComponentsExternalPackages: ['@sismo-core/sismo-connect-server'],
+  },
+
   reactStrictMode: true,
   swcMinify: true,
 
