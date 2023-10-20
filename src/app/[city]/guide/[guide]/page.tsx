@@ -69,16 +69,11 @@ export default function Page({
                     <Loader2 className='mr-2 mt-20 h-10 w-10 animate-spin' />
                   </div>
                 ) : (
-                  <div className='flex w-full flex-col'>
-                    {/* <a href={`/${city.slug}`}>
-                      <span className='text-left font-bold underline'>
-                        {city.name}
-                      </span>
-                    </a> */}
-                    <h1 className='text-left text-5xl font-bold'>
+                  <div className='m-auto mt-4 flex  w-full max-w-[800px] flex-col'>
+                    <h1 className='pb-5 text-left text-5xl font-bold'>
                       {currentguide.name}
                     </h1>
-                    <ReactMarkdown className='prose mt-4 max-w-full'>
+                    <ReactMarkdown className='prose'>
                       {currentguide.body}
                     </ReactMarkdown>
                   </div>

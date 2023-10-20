@@ -7,6 +7,9 @@ import * as React from 'react';
 
 import { supabase } from '@/lib/supabase';
 
+import CommunityCard from '@/components/ui/CommunityCard';
+import GuideCard from '@/components/ui/GuideCard';
+
 import Connect from '@/app/components/Connect';
 
 export default function Page({ params }: { params: { city: string } }) {
@@ -60,8 +63,9 @@ export default function Page({ params }: { params: { city: string } }) {
           <ThemeProvider theme={safeTheme}>
             <CssBaseline />
             <Connect city={city} />
-            {city && city.slug ? (
+            {city && city.slug && !loading ? (
               <div className='m-auto flex w-full max-w-[1200px] p-5'>
+                {/* <PlaceMap initLat={city.lat} initLng={city.lng} /> */}
                 <div className='flex h-full w-full'>
                   {loading ? (
                     <div className='flex h-full w-full items-center justify-center'>
@@ -71,42 +75,57 @@ export default function Page({ params }: { params: { city: string } }) {
                     <div className='flex w-full flex-col'>
                       {guide.length ? (
                         <div>
-                          <h1 className='text-center text-5xl font-bold'>
+                          <h1 className='pb-4 text-center text-5xl font-bold'>
                             Guides
                           </h1>
-                          {guide.map((item: any) => (
-                            <div
-                              key={item.id}
-                              className='m-2 rounded-md border-2 border-gray-100 bg-[#D7E86C] p-2'
-                            >
-                              <a href={`${city.slug}/guide/${item.slug}`}>
-                                <h2 className='text-xl font-bold'>
-                                  {item.name}
-                                </h2>
-                                <p>{item.desc}</p>
-                              </a>
-                            </div>
-                          ))}
+                          <div className='grid w-full grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3'>
+                            {guide.map((item: any) => (
+                              <GuideCard
+                                key={item.id}
+                                guide={item}
+                                city={city}
+                              />
+                              // <div
+                              //   key={item.id}
+                              //   className='m-2 rounded-md border-2 border-gray-100 bg-[#D7E86C] p-2'
+                              // >
+                              //   <a href={`${city.slug}/guide/${item.slug}`}>
+                              //     <h2 className='text-xl font-bold'>
+                              //       {item.name}
+                              //     </h2>
+                              //     <p>{item.desc}</p>
+                              //   </a>
+                              // </div>
+                            ))}
+                          </div>
                         </div>
                       ) : null}
+
                       {communities.length ? (
                         <div>
-                          <h1 className='text-center text-5xl font-bold'>
+                          <h1 className='pb-4 text-center text-5xl font-bold'>
                             Communities
                           </h1>
-                          {communities.map((item: any) => (
-                            <div
-                              key={item.id}
-                              className='m-2 rounded-md border-2 border-gray-100 bg-[#D7E86C] p-2'
-                            >
-                              <a href={`${city.slug}/community/${item.slug}`}>
-                                <h2 className='text-xl font-bold'>
-                                  {item.name}
-                                </h2>
-                                <p>{item.desc}</p>
-                              </a>
-                            </div>
-                          ))}
+                          <div className='grid w-full grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3'>
+                            {communities.map((item: any) => (
+                              <CommunityCard
+                                key={item.id}
+                                community={item}
+                                city={city}
+                              />
+                              // <div
+                              //   key={item.id}
+                              //   className='m-2 rounded-md border-2 border-gray-100 bg-[#D7E86C] p-2'
+                              // >
+                              //   <a href={`${city.slug}/community/${item.slug}`}>
+                              //     <h2 className='text-xl font-bold'>
+                              //       {item.name}
+                              //     </h2>
+                              //     <p>{item.desc}</p>
+                              //   </a>
+                              // </div>
+                            ))}
+                          </div>
                         </div>
                       ) : null}
                     </div>
@@ -114,13 +133,15 @@ export default function Page({ params }: { params: { city: string } }) {
                 </div>
               </div>
             ) : (
-              <div className='m-auto flex w-full max-w-[1200px] p-5'>
-                <div className='flex h-full w-full'>
-                  <div className='flex h-full w-full items-center justify-center'>
-                    <h1 className='text-center text-5xl font-bold'>404</h1>
+              !loading && (
+                <div className='m-auto flex w-full max-w-[1200px] p-5'>
+                  <div className='flex h-full w-full'>
+                    <div className='flex h-full w-full items-center justify-center'>
+                      <h1 className='text-center text-5xl font-bold'>404</h1>
+                    </div>
                   </div>
                 </div>
-              </div>
+              )
             )}
           </ThemeProvider>
         )}

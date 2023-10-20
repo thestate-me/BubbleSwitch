@@ -1,9 +1,9 @@
 import {
+  AppBar as MuiAppBar,
   Box,
   Button,
-  AppBar as MuiAppBar,
-  Typography,
   styled,
+  Typography,
 } from '@mui/material';
 import { UserInfo } from '@web3auth/base';
 import Link from 'next/link';
@@ -24,8 +24,8 @@ const AppBar = ({
   city,
 }: AppBarProps) => {
   return (
-    <StyledAppBar position='static' className='m-auto' color='default'>
-      <div className='m-auto flex w-full max-w-[1300px] items-center justify-between px-10'>
+    <StyledAppBar position='static' className='z-100 m-auto' color='default'>
+      <div className='z-10 m-auto flex w-full max-w-[1300px] items-center justify-between px-10'>
         <Typography variant='h3' pl={4} fontWeight={700} className='flex'>
           <Link href='/' className='hover:underline'>
             Nomad guides{' '}
@@ -75,6 +75,7 @@ const StyledAppBar = styled(MuiAppBar)`
     flex-direction: row;
     border-bottom: 2px solid ${({ theme }) => theme.palette.background.paper};
     box-shadow: none;
+    z-index: 100;
   }
 `;
 
