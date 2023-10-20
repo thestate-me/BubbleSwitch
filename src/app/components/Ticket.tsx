@@ -18,10 +18,16 @@ export default function Ticket({ url }: any) {
     <a href={url} target='_blank' rel='noreferrer'>
       <section className='flex w-full flex-grow items-center justify-center bg-gray-100 p-4'>
         <div className='flex h-64 w-full max-w-3xl text-zinc-50'>
-          <div className='flex h-full items-center justify-center rounded-l-3xl bg-zinc-900 px-8'>
+          <div className='flex h-full flex-col items-center justify-center rounded-l-3xl bg-zinc-900 px-8'>
             <img
               src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${url}`}
             />
+            <div
+              className='mt-2 font-mono text-xs text-zinc-400'
+              // style={{ writingMode: 'vertical-rl' }}
+            >
+              Click or scan
+            </div>
           </div>
           <div className='relative flex h-full flex-col items-center justify-between border-2 border-dashed border-zinc-50 bg-zinc-900'>
             <div className='absolute -top-5 h-8 w-8 rounded-full bg-gray-100'></div>
@@ -34,7 +40,7 @@ export default function Ticket({ url }: any) {
                 <span className='text-sm text-zinc-500'>Human</span>
               </div>
               <div className='flex flex-grow flex-col items-center px-10'>
-                <span className='text-xs font-bold'>RS 11</span>
+                {/* <span className='text-xs font-bold'>RS 11</span> */}
                 <div className='mt-2 flex w-full items-center'>
                   <div className='h-3 w-3 rounded-full border-2 border-zinc-900'></div>
                   <div className='h-px flex-grow border-t-2 border-dotted border-zinc-400'></div>
@@ -71,10 +77,10 @@ export default function Ticket({ url }: any) {
                 <span className='text-xs text-zinc-400'>Passenger</span>
                 <span className='font-mono'>YOU</span>
               </div>
-              <div className='flex flex-col'>
+              {/* <div className='flex flex-col'>
                 <span className='text-xs text-zinc-400'>Gate/Seat</span>
                 <span className='font-mono'>A11/21C</span>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
