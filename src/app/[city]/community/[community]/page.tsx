@@ -131,7 +131,7 @@ export default function Page({
                         {/* eslint-disable-next-line no-constant-condition */}
                         <div>
                           {userAddress ? (
-                            <QrNSFW userAddr='0x3B04F107176B54Fc5697f9b65Fa6dE14D43d67e9' />
+                            <QrNSFW userAddr={userAddress} />
                           ) : (
                             'Login first'
                           )}
