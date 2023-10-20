@@ -5,7 +5,13 @@ import {
   SismoConnectResponse,
 } from '@sismo-core/sismo-connect-react';
 
-export default function Sismo() {
+export default function Sismo({
+  groupId,
+  callback,
+}: {
+  groupId: string;
+  callback: (response: SismoConnectResponse) => void;
+}) {
   return (
     <SismoConnectButton
       config={{
@@ -13,12 +19,10 @@ export default function Sismo() {
       }}
       claims={[
         {
-          groupId: '0x0f800ff28a426924cbe66b67b9f837e2',
+          groupId,
         },
       ]}
-      onResponse={(response: SismoConnectResponse) => {
-        console.log(response);
-      }}
+      onResponse={callback}
     />
   );
 }
