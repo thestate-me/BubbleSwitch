@@ -40,12 +40,7 @@ export default function Page({
       setCity(fetchedCity[0]);
       console.log(fetchedCity);
 
-      const { data: guides, error: error2 } = await supabase
-        .from('guides')
-        .select('*')
-        .eq('city', fetchedCity[0].id);
-      if (!guides || !guides[0]) return '404';
-      setguide(guides);
+      // setguide(guides);
 
       const { data: fetchedCommunities, error: error3 } = await supabase
         .from('community')
@@ -56,13 +51,14 @@ export default function Page({
         .from('community')
         .select('*')
         .eq('slug', params.community);
+      console.log('currentFetchedCommunity', currentFetchedCommunity);
+      console.log('error4', error4);
       if (!fetchedCommunities || !fetchedCommunities[0]) return '404';
       if (!currentFetchedCommunity || !currentFetchedCommunity[0]) return '404';
       console.log('currentFetchedCommunity', currentFetchedCommunity);
       setcommunity(currentFetchedCommunity[0]);
       setcommunities(fetchedCommunities);
       console.log('error', error);
-      console.log('guides', guides);
       if (error) throw error;
       console.log('cities', city);
     } finally {
@@ -97,7 +93,7 @@ export default function Page({
                         You should buy subscription to see the link
                       </div>
                     ) : community.sismo_group ? (
-                      <div className='text-center text-3xl font-bold'>
+                      <div className='flex flex-col text-center text-3xl font-bold'>
                         Verify your identity to see the link
                         <Sismo
                           groupId={community.id}
@@ -108,7 +104,7 @@ export default function Page({
                                 'Content-Type': 'application/json',
                               },
                               body: JSON.stringify({
-                                communityId: community.id,
+                                communityId: community.sismo_group,
                                 sismo: response,
                               }),
                             }).then((res) => res.json());
