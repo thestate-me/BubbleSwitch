@@ -2,12 +2,15 @@
 
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import { SafeThemeProvider } from '@safe-global/safe-react-components';
+import { SismoConnectResponse } from '@sismo-core/sismo-connect-react';
 import { Loader2 } from 'lucide-react';
 import * as React from 'react';
 
 import { supabase } from '@/lib/supabase';
 
 import Connect from '@/app/components/Connect';
+import QrNSFW from '@/app/components/PolygonNSFW';
+import Sismo from '@/app/components/Sismo';
 
 export default function Page({
   params,
@@ -65,6 +68,7 @@ export default function Page({
       setLoading(false);
     }
   };
+  const [allowLink, setallowLink] = React.useState(false);
   return (
     <React.StrictMode>
       <SafeThemeProvider mode='light'>
@@ -91,12 +95,48 @@ export default function Page({
                       <div className='text-center text-3xl font-bold'>
                         You should buy subscription to see the link
                       </div>
+                    ) : community.sismo_group ? (
+                      <div className='text-center text-3xl font-bold'>
+                        Verify your identity to see the link
+                        <Sismo
+                          groupId={community.id}
+                          callback={async (response: SismoConnectResponse) => {
+                            const res = await fetch(`/api/sismo/verify`, {
+                              method: 'POST',
+                              headers: {
+                                'Content-Type': 'application/json',
+                              },
+                              body: JSON.stringify({
+                                communityId: community.id,
+                                sismo: response,
+                              }),
+                            }).then((res) => res.json());
+                            if (res && res.result === 'success')
+                              setallowLink(true);
+
+                            console.log(response);
+                          }}
+                        ></Sismo>
+                      </div>
                     ) : community.nsfw ? (
                       <div className='text-center text-3xl font-bold'>
                         You should be 18+ to see the link
+                        {/* // TODO: прокинь сюда юзера  */}
+                        {/* eslint-disable-next-line no-constant-condition */}
+                        {'user' == 'user' ? (
+                          <QrNSFW userAddr='0x3B04F107176B54Fc5697f9b65Fa6dE14D43d67e9'></QrNSFW>
+                        ) : null}
                       </div>
                     ) : (
                       <div className='mt-4 text-center'>
+                        <a href={community.url} target='_blank'>
+                          {community.url}
+                        </a>
+                      </div>
+                    )}
+                    {allowLink && (
+                      <div className='mt-4 text-center'>
+                        Great! Here is the link!
                         <a href={community.url} target='_blank'>
                           {community.url}
                         </a>
