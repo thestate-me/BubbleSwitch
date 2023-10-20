@@ -10,7 +10,7 @@ import { getWeb3AuthModalPack } from '@/lib/safeAuth';
 
 import AppBar from '@/app/components/AppBar';
 
-export default function Connect() {
+export default function Connect({ city }: any) {
   const [web3AuthModalPack, setWeb3AuthModalPack] =
     useState<Web3AuthModalPack>();
   const [safeAuthSignInResponse, setSafeAuthSignInResponse] =
@@ -66,6 +66,7 @@ export default function Connect() {
         onLogout={logout}
         userInfo={userInfo}
         isLoggedIn={!!provider}
+        city={city}
       />
       {safeAuthSignInResponse?.eoa && (
         <Grid container>

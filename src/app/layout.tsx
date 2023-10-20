@@ -56,6 +56,23 @@ export default function RootLayout({
   return (
     <html>
       <body>{children}</body>
+      <div>
+        <footer className='mb-10 mt-20 bg-gray-100 dark:bg-gray-900'>
+          <div className='mx-auto flex max-w-2xl flex-col items-center justify-center p-4 text-center md:p-8'>
+            <p className='text-gray-800 dark:text-gray-200'>
+              Made with ❤️ by{' '}
+              <a
+                href='thestate.me'
+                className='font-bold hover:underline'
+                target='_blank'
+                rel='noopener noreferrer'
+              >
+                TheState.Me
+              </a>
+            </p>
+          </div>
+        </footer>
+      </div>
     </html>
   );
 }

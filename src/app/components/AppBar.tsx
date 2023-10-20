@@ -13,17 +13,25 @@ type AppBarProps = {
   onLogin: () => void;
   onLogout: () => void;
   userInfo?: Partial<UserInfo>;
+  city: any;
 };
 
-const AppBar = ({ isLoggedIn, onLogin, onLogout, userInfo }: AppBarProps) => {
+const AppBar = ({
+  isLoggedIn,
+  onLogin,
+  onLogout,
+  userInfo,
+  city,
+}: AppBarProps) => {
   return (
     <StyledAppBar position='static' className='m-auto' color='default'>
       <div className='m-auto flex w-full max-w-[1300px] items-center justify-between px-10'>
-        <Link href='/'>
-          <Typography variant='h3' pl={4} fontWeight={700}>
-            Nomad guides
-          </Typography>
-        </Link>
+        <Typography variant='h3' pl={4} fontWeight={700}>
+          <Link href='/'>Nomad guides</Link>
+          {city ? (
+            <Link href={`/${city.slug}`}>{` / ${city.name}`}</Link>
+          ) : null}
+        </Typography>
 
         <Box mr={5}>
           {isLoggedIn ? (

@@ -59,7 +59,7 @@ export default function Page({ params }: { params: { city: string } }) {
         {(safeTheme) => (
           <ThemeProvider theme={safeTheme}>
             <CssBaseline />
-            <Connect />
+            <Connect city={city} />
             <div className='m-auto flex w-full max-w-[1200px] p-5'>
               <div className='flex h-full w-full'>
                 {loading ? (
@@ -68,19 +68,20 @@ export default function Page({ params }: { params: { city: string } }) {
                   </div>
                 ) : (
                   <div className='flex w-full flex-col'>
-                    <h1 className='text-center text-5xl font-bold'>
-                      {city.name}
-                    </h1>
                     {guide.length ? (
                       <div>
-                        <h2 className='text-xl font-bold'>Guides:</h2>
+                        <h1 className='text-center text-5xl font-bold'>
+                          Guides
+                        </h1>
                         {guide.map((item: any) => (
                           <div
                             key={item.id}
                             className='m-2 rounded-md border-2 border-gray-100 bg-[#D7E86C] p-2'
                           >
                             <a href={`${city.slug}/guide/${item.slug}`}>
-                              <h2 className='text-xl font-bold'>{item.name}</h2>
+                              <h1 className='text-center text-5xl font-bold'>
+                                {item.name}
+                              </h1>
                               <p>{item.desc}</p>
                             </a>
                           </div>
@@ -89,7 +90,9 @@ export default function Page({ params }: { params: { city: string } }) {
                     ) : null}
                     {communities.length ? (
                       <div>
-                        <h2 className='text-xl font-bold'>Communities:</h2>
+                        <h1 className='text-center text-5xl font-bold'>
+                          Communities
+                        </h1>
                         {communities.map((item: any) => (
                           <div
                             key={item.id}
