@@ -40,12 +40,7 @@ export default function Page({
       setCity(fetchedCity[0]);
       console.log(fetchedCity);
 
-      const { data: guides, error: error2 } = await supabase
-        .from('guides')
-        .select('*')
-        .eq('city', fetchedCity[0].id);
-      if (!guides || !guides[0]) return '404';
-      setguide(guides);
+      // setguide(guides);
 
       const { data: fetchedCommunities, error: error3 } = await supabase
         .from('community')
@@ -56,19 +51,25 @@ export default function Page({
         .from('community')
         .select('*')
         .eq('slug', params.community);
+      console.log('currentFetchedCommunity', currentFetchedCommunity);
+      console.log('error4', error4);
       if (!fetchedCommunities || !fetchedCommunities[0]) return '404';
       if (!currentFetchedCommunity || !currentFetchedCommunity[0]) return '404';
       console.log('currentFetchedCommunity', currentFetchedCommunity);
       setcommunity(currentFetchedCommunity[0]);
       setcommunities(fetchedCommunities);
       console.log('error', error);
-      console.log('guides', guides);
       if (error) throw error;
       console.log('cities', city);
     } finally {
       setLoading(false);
     }
   };
+  const [userAddress, setuserAddress] = React.useState([] as any);
+  React.useEffect(() => {
+    const addr = localStorage.getItem('userAddress');
+    if (addr) setuserAddress(addr);
+  }, []);
   const [allowLink, setallowLink] = React.useState(false);
   return (
     <React.StrictMode>
@@ -79,7 +80,7 @@ export default function Page({
             <Connect city={city} />
             <div className='m-auto flex w-full max-w-[1200px] p-5'>
               <div className='flex h-full w-full'>
-                {loading ? (
+                {loading && community ? (
                   <div className='flex h-full w-full items-center justify-center'>
                     <Loader2 className='mr-2 mt-20 h-10 w-10 animate-spin' />
                   </div>
@@ -97,36 +98,44 @@ export default function Page({
                         You should buy subscription to see the link
                       </div>
                     ) : community.sismo_group ? (
-                      <div className='text-center text-3xl font-bold'>
+                      <div className='mt-5 flex flex-col text-center text-3xl font-bold'>
                         Verify your identity to see the link
-                        <Sismo
-                          groupId={community.id}
-                          callback={async (response: SismoConnectResponse) => {
-                            const res = await fetch(`/api/sismo/verify`, {
-                              method: 'POST',
-                              headers: {
-                                'Content-Type': 'application/json',
-                              },
-                              body: JSON.stringify({
-                                communityId: community.id,
-                                sismo: response,
-                              }),
-                            }).then((res) => res.json());
-                            if (res && res.result === 'success')
-                              setallowLink(true);
+                        <div className='m-auto mt-5 max-w-[300px]'>
+                          <Sismo
+                            groupId={community.id}
+                            callback={async (
+                              response: SismoConnectResponse
+                            ) => {
+                              const res = await fetch(`/api/sismo/verify`, {
+                                method: 'POST',
+                                headers: {
+                                  'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify({
+                                  communityId: community.sismo_group,
+                                  sismo: response,
+                                }),
+                              }).then((res) => res.json());
+                              if (res && res.result === 'success')
+                                setallowLink(true);
 
-                            console.log(response);
-                          }}
-                        ></Sismo>
+                              console.log(response);
+                            }}
+                          />
+                        </div>
                       </div>
                     ) : community.nsfw ? (
                       <div className='text-center text-3xl font-bold'>
                         You should be 18+ to see the link
                         {/* // TODO: прокинь сюда юзера  */}
                         {/* eslint-disable-next-line no-constant-condition */}
-                        {'user' == 'user' ? (
-                          <QrNSFW userAddr='0x3B04F107176B54Fc5697f9b65Fa6dE14D43d67e9'></QrNSFW>
-                        ) : null}
+                        <div>
+                          {userAddress ? (
+                            <QrNSFW userAddr={userAddress} />
+                          ) : (
+                            'Login first'
+                          )}
+                        </div>
                       </div>
                     ) : (
                       <div className='mt-4 text-center'>
@@ -136,12 +145,12 @@ export default function Page({
                         <Ticket url={community.url} />
                       </div>
                     )}
-                    {allowLink && (
+                    {/* {allowLink && (
                       <div className='mt-4 text-center'>
                         Great! Here is the link!
                         <Ticket url={community.url} />
                       </div>
-                    )}
+                    )} */}
                   </div>
                 )}
               </div>
