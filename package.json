@@ -27,6 +27,7 @@
     "@safe-global/auth-kit": "^1.2.1",
     "@safe-global/safe-react-components": "^2.0.6",
     "@sismo-core/sismo-connect-react": "^0.0.23",
+    "@sismo-core/sismo-connect-server": "^0.0.23",
     "@supabase/supabase-js": "^2.38.1",
     "@tailwindcss/typography": "^0.5.10",
     "@web3auth/base": "^7.0.4",

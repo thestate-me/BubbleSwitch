@@ -11,7 +11,7 @@ export default function Sismo() {
   return (
     <SismoConnectButton
       config={{
-        appId: '0x339f7918ae66a423e409d1714118f976', // replace with your appId
+        appId: process.env.NEXT_PUBLIC_SISMO_APP_ID || '',
         vault: {
           // For development purposes insert the Data Sources that you want to impersonate here
           // Never use this in production
@@ -30,36 +30,18 @@ export default function Sismo() {
             'telegram:leo21',
           ],
         },
-        // displayRawResponse: true,
       }}
-      // request proof of Data Sources ownership (e.g EVM, GitHub, twitter or telegram)
       auths={[{ authType: AuthType.GITHUB }]}
-      // request zk proof that Data Source are part of a group
-      // (e.g NFT ownership, Dao Participation, GitHub commits)
       claims={[
-        // ENS DAO Voters
-        { groupId: '0x85c7ee90829de70d0d51f52336ea4722' },
-        // Gitcoin passport with at least a score of 15
         {
           groupId: '0x1cde61966decb8600dfd0749bd371f12',
           value: 15,
           claimType: ClaimType.GTE,
         },
       ]}
-      // request message signature from users.
-      signature={{ message: 'I vote Yes to Privacy' }}
-      // retrieve the Sismo Connect Reponse from the user's Sismo data vault
-      onResponse={async (response: SismoConnectResponse) => {
-        const res = await fetch('/api/verify', {
-          method: 'POST',
-          body: JSON.stringify(response),
-        });
-        console.log(await res.json());
+      onResponse={(response: SismoConnectResponse) => {
+        console.log(response);
       }}
-      // reponse in bytes to call a contract
-      // onResponseBytes={async (response: string) => {
-      //   console.log(response);
-      // }}
     />
   );
 }
