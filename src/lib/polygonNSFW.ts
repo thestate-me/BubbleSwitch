@@ -1,5 +1,6 @@
 import { AuthorizationRequestMessage } from '@0xpolygonid/js-sdk';
 import { auth, resolver } from '@iden3/js-iden3-auth';
+import { format, subYears } from 'date-fns';
 
 export function KYCAgeCredential(credentialSubject: object) {
   return {
@@ -15,21 +16,27 @@ export function KYCAgeCredential(credentialSubject: object) {
   };
 }
 
-export async function generateQr(
-  id: string,
+export function generateRequest(
+  userAddr: string,
   reason: string,
-  credentialSubject: object
+  birthday?: number
 ) {
+  const bd = birthday || parseInt(format(subYears(new Date(), 18), 'yyyyMMdd'));
+
   const request = auth.createAuthorizationRequest(
     reason,
     process.env.POLYGON_VERIFIER_DID || '',
-    `${process.env.BASE_URL}api/polygon/callback`
+    `${process.env.BASE_URL}api/polygon/nsfw/verify?userAddr=${userAddr}&birthday=${bd}`
   );
 
-  request.id = id;
-  request.thid = id;
+  request.id = userAddr;
+  request.thid = userAddr;
 
-  const proofRequest = KYCAgeCredential(credentialSubject);
+  const proofRequest = KYCAgeCredential({
+    birthday: {
+      $lt: bd,
+    },
+  });
 
   const scope = request.body.scope ?? [];
   request.body.scope = [...scope, proofRequest];

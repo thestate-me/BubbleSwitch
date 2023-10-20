@@ -5,7 +5,10 @@ const nextConfig = {
   },
 
   experimental: {
-    serverComponentsExternalPackages: ['@sismo-core/sismo-connect-server'],
+    serverComponentsExternalPackages: [
+      '@sismo-core/sismo-connect-server',
+      '@iden3/js-iden3-auth',
+    ],
   },
 
   reactStrictMode: true,
