@@ -39,6 +39,8 @@ export default function Connect({ city }: any) {
     setSafeAuthSignInResponse(signInInfo);
     setUserInfo(userInfo || undefined);
     setProvider(web3AuthModalPack.getProvider() as SafeEventEmitterProvider);
+
+    localStorage.setItem('userAddress', signInInfo.eoa);
   };
 
   const logout = async () => {
@@ -48,6 +50,8 @@ export default function Connect({ city }: any) {
 
     setProvider(null);
     setSafeAuthSignInResponse(null);
+
+    localStorage.removeItem('userAddress');
   };
 
   useEffect(() => {
