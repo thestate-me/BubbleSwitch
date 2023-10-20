@@ -27,7 +27,7 @@ export async function POST(req: Request) {
 
     const response = await verify(token, request);
 
-    await supabase.from('user').update({ adult: true }).eq('id', userAddr);
+    await supabase.from('user').update({ adult: true }).eq('address', userAddr);
 
     console.log(response);
     return NextResponse.json({ result: 'success' });
