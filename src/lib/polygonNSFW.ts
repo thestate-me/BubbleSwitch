@@ -59,7 +59,6 @@ export async function verify(
 
   const verifier = await auth.Verifier.newVerifier({
     stateResolver,
-    circuitsDir: 'keys',
   });
 
   const response = await verifier.fullVerify(token, request, {
