@@ -25,7 +25,7 @@ const AppBar = ({
 }: AppBarProps) => {
   return (
     <StyledAppBar position='static' className='z-100 m-auto' color='default'>
-      <div className='z-10 m-auto flex w-full max-w-[1300px] items-center justify-between px-10'>
+      <div className='z-10 m-auto flex w-full max-w-[1300px] items-center justify-between '>
         <Typography variant='h3' pl={4} fontWeight={700} className='flex'>
           <Link href='/' className='hover:underline'>
             Nomad guild{' '}
