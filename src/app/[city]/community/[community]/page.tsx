@@ -99,29 +99,33 @@ export default function Page({
                       </div>
                     ) : community.sismo_group && !allowLink ? (
                       <div className='mt-5 flex flex-col text-center text-3xl font-bold'>
-                        Verify your identity to see the link
+                        You should verify your identity to see the link
                         <div className='m-auto mt-5 max-w-[300px]'>
-                          <Sismo
-                            groupId={community.sismo_group}
-                            callback={async (
-                              response: SismoConnectResponse
-                            ) => {
-                              const res = await fetch(`/api/sismo/verify`, {
-                                method: 'POST',
-                                headers: {
-                                  'Content-Type': 'application/json',
-                                },
-                                body: JSON.stringify({
-                                  communityId: community.id,
-                                  sismo: response,
-                                }),
-                              }).then((res) => res.json());
-                              if (res && res.result === 'success')
-                                setallowLink(true);
+                          {userAddress ? (
+                            <Sismo
+                              groupId={community.sismo_group}
+                              callback={async (
+                                response: SismoConnectResponse
+                              ) => {
+                                const res = await fetch(`/api/sismo/verify`, {
+                                  method: 'POST',
+                                  headers: {
+                                    'Content-Type': 'application/json',
+                                  },
+                                  body: JSON.stringify({
+                                    communityId: community.id,
+                                    sismo: response,
+                                  }),
+                                }).then((res) => res.json());
+                                if (res && res.result === 'success')
+                                  setallowLink(true);
 
-                              console.log(response);
-                            }}
-                          />
+                                console.log(response);
+                              }}
+                            />
+                          ) : (
+                            'Login first'
+                          )}
                         </div>
                       </div>
                     ) : allowLink ? (
