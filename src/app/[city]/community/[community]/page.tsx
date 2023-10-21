@@ -80,7 +80,7 @@ export default function Page({
             <Connect city={city} />
             <div className='m-auto flex w-full max-w-[1200px] p-5'>
               <div className='flex h-full w-full'>
-                {loading && community ? (
+                {loading && !community.name ? (
                   <div className='flex h-full w-full items-center justify-center'>
                     <Loader2 className='mr-2 mt-20 h-10 w-10 animate-spin' />
                   </div>
@@ -97,7 +97,7 @@ export default function Page({
                       <div className='text-center text-3xl font-bold'>
                         You should buy subscription to see the link
                       </div>
-                    ) : community.sismo_group ? (
+                    ) : community.sismo_group && !allowLink ? (
                       <div className='mt-5 flex flex-col text-center text-3xl font-bold'>
                         Verify your identity to see the link
                         <div className='m-auto mt-5 max-w-[300px]'>
@@ -124,6 +124,11 @@ export default function Page({
                           />
                         </div>
                       </div>
+                    ) : allowLink ? (
+                      <div className='mt-4 text-center'>
+                        Great! Here is the link!
+                        <Ticket url={community.url} />
+                      </div>
                     ) : community.nsfw ? (
                       <div className='text-center text-3xl font-bold'>
                         You should be 18+ to see the link
@@ -145,12 +150,6 @@ export default function Page({
                         <Ticket url={community.url} />
                       </div>
                     )}
-                    {/* {allowLink && (
-                      <div className='mt-4 text-center'>
-                        Great! Here is the link!
-                        <Ticket url={community.url} />
-                      </div>
-                    )} */}
                   </div>
                 )}
               </div>
