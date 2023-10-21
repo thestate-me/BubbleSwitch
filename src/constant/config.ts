@@ -1,6 +1,6 @@
 export const siteConfig = {
-  title: 'Nomad Guides',
+  title: 'BubbleSwitch',
   description:
-    'A collection of guides for digital nomads, remote workers, and travelers.',
+    'A collection of guides and communities for digital nomads, remote workers, and travelers.',
   url: 'https://nomad-guild.vercel.app/',
 };
