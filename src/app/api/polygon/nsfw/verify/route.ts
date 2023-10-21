@@ -1,6 +1,6 @@
 import { AuthorizationRequestMessage } from '@0xpolygonid/js-sdk';
 import { format, subYears } from 'date-fns';
-import { isAddress } from 'ethers';
+import { utils } from 'ethers';
 import { NextResponse } from 'next/server';
 
 import { generateRequest, verify } from '@/lib/polygonNSFW';
@@ -13,7 +13,7 @@ export async function POST(req: Request) {
   const userAddr = searchParams.get('userAddr');
   const birthday = parseInt(searchParams.get('birthday') || '0');
 
-  if (typeof userAddr != 'string' || isAddress(userAddr) || birthday == 0)
+  if (typeof userAddr != 'string' || utils.isAddress(userAddr) || birthday == 0)
     return NextResponse.json({ result: 'Invalid params' });
 
   if (birthday > parseInt(format(subYears(new Date(), 18), 'yyyyMMdd')))
