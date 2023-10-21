@@ -1,9 +1,9 @@
 import {
-  AppBar as MuiAppBar,
   Box,
   Button,
-  styled,
+  AppBar as MuiAppBar,
   Typography,
+  styled,
 } from '@mui/material';
 import { UserInfo } from '@web3auth/base';
 import Link from 'next/link';
@@ -46,7 +46,7 @@ const AppBar = ({
             <Box display='flex' alignItems='center'>
               {userInfo && (
                 <Typography variant='body1' fontWeight={700}>
-                  Hello {userInfo.name || userInfo.email} !!
+                  Hello, {userInfo.name || userInfo.email}
                 </Typography>
               )}
               <Button variant='contained' onClick={onLogout} sx={{ ml: 2 }}>
