@@ -96,6 +96,8 @@ export async function verify(
     },
   });
 
+  await verifier.setupAuthV2ZKPPacker(circuitStorage);
+
   const response = await verifier.fullVerify(token, request, {
     acceptedStateTransitionDelay: 5 * 60 * 1000,
     acceptedProofGenerationDelay: 1 * 365 * 24 * 60 * 60 * 1000,
