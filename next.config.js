@@ -8,6 +8,7 @@ const nextConfig = {
     serverComponentsExternalPackages: [
       '@sismo-core/sismo-connect-server',
       '@iden3/js-iden3-auth',
+      '@0xpolygonid/js-sdk',
     ],
   },
 
