@@ -38,7 +38,7 @@ export function generateRequest(
   const request = auth.createAuthorizationRequest(
     reason,
     process.env.POLYGON_VERIFIER_DID || '',
-    `${process.env.BASE_URL}api/polygon/nsfw/verify?userAddr=${userAddr}&birthday=${bd}`
+    `${process.env.BASE_URL}/api/polygon/nsfw/verify?userAddr=${userAddr}&birthday=${bd}`
   );
 
   request.id = userAddr;
