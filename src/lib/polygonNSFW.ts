@@ -1,6 +1,18 @@
-import { AuthorizationRequestMessage } from '@0xpolygonid/js-sdk';
+import {
+  AuthorizationRequestMessage,
+  cacheLoader,
+  CircuitData,
+  CircuitId,
+  CircuitStorage,
+  InMemoryDataSource,
+  NativeProver,
+  PackageManager,
+} from '@0xpolygonid/js-sdk';
 import { auth, resolver } from '@iden3/js-iden3-auth';
 import { format, subYears } from 'date-fns';
+
+import authV2 from '../../circuits/authV2/verification_key.json';
+import atomicQuerySigV2 from '../../circuits/authV2/verification_key.json';
 
 export function KYCAgeCredential(credentialSubject: object) {
   return {
@@ -57,8 +69,31 @@ export async function verify(
     [process.env.POLYGON_RESOLVER || 'polygon:mumbai']: ethStateResolver,
   };
 
+  const dataSource = new InMemoryDataSource<CircuitData>();
+  const circuitStorage = new CircuitStorage(dataSource);
+
+  circuitStorage.saveCircuitData(CircuitId.AuthV2, {
+    circuitId: CircuitId.AuthV2,
+    verificationKey: Buffer.from(JSON.stringify(authV2)),
+    wasm: null,
+    provingKey: null,
+  });
+
+  circuitStorage.saveCircuitData(CircuitId.AtomicQuerySigV2, {
+    circuitId: CircuitId.AtomicQuerySigV2,
+    verificationKey: Buffer.from(JSON.stringify(atomicQuerySigV2)),
+    wasm: null,
+    provingKey: null,
+  });
+
   const verifier = await auth.Verifier.newVerifier({
     stateResolver,
+    suite: {
+      documentLoader: cacheLoader(),
+      circuitStorage,
+      prover: new NativeProver(circuitStorage),
+      packageManager: new PackageManager(),
+    },
   });
 
   const response = await verifier.fullVerify(token, request, {
