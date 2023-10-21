@@ -17,7 +17,8 @@ export default function QrNSFW({ userAddr }: { userAddr: string }) {
         if (data.result != 'success') setError(data.result);
         else setRequest(JSON.stringify(data.qr));
       });
-  });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (error) return <p>{error}</p>;
   if (!request) return <p>Waiting...</p>;
