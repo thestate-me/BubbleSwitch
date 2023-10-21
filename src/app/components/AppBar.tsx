@@ -1,9 +1,9 @@
 import {
+  AppBar as MuiAppBar,
   Box,
   Button,
-  AppBar as MuiAppBar,
-  Typography,
   styled,
+  Typography,
 } from '@mui/material';
 import { UserInfo } from '@web3auth/base';
 import Link from 'next/link';

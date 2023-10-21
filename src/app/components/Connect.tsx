@@ -1,8 +1,6 @@
 'use client';
 
-import { Divider, Grid, Typography } from '@mui/material';
 import { AuthKitSignInData, Web3AuthModalPack } from '@safe-global/auth-kit';
-import { EthHashInfo } from '@safe-global/safe-react-components';
 import type { SafeEventEmitterProvider, UserInfo } from '@web3auth/base';
 import { useEffect, useState } from 'react';
 
@@ -72,7 +70,7 @@ export default function Connect({ city }: any) {
         isLoggedIn={!!provider}
         city={city}
       />
-      {safeAuthSignInResponse?.eoa && (
+      {/* {safeAuthSignInResponse?.eoa && (
         <Grid container>
           <Grid item md={4} p={4}>
             <Typography variant='h3' color='secondary' fontWeight={700}>
@@ -86,7 +84,7 @@ export default function Connect({ city }: any) {
               prefix='eth'
             />
           </Grid>
-          {/* <Grid item md={8} p={4}>
+          <Grid item md={8} p={4}>
             <>
               <Typography variant='h3' color='secondary' fontWeight={700}>
                 Available Safes
@@ -108,9 +106,9 @@ export default function Connect({ city }: any) {
                 </Typography>
               )}
             </>
-          </Grid> */}
+          </Grid>
         </Grid>
-      )}
+      )} */}
     </>
   );
 }
