@@ -6,7 +6,7 @@ import { generateRequest } from '@/lib/polygonNSFW';
 export async function POST(req: Request) {
   const { userAddr } = await req.json();
 
-  if (typeof userAddr != 'string' || utils.isAddress(userAddr))
+  if (typeof userAddr != 'string' || !utils.isAddress(userAddr))
     return NextResponse.json({ result: 'Invalid params' });
 
   const qr = generateRequest(userAddr, 'Data required to get further access');

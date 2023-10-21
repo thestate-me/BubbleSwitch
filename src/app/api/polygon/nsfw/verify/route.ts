@@ -13,7 +13,11 @@ export async function POST(req: Request) {
   const userAddr = searchParams.get('userAddr');
   const birthday = parseInt(searchParams.get('birthday') || '0');
 
-  if (typeof userAddr != 'string' || utils.isAddress(userAddr) || birthday == 0)
+  if (
+    typeof userAddr != 'string' ||
+    !utils.isAddress(userAddr) ||
+    birthday == 0
+  )
     return NextResponse.json({ result: 'Invalid params' });
 
   if (birthday > parseInt(format(subYears(new Date(), 18), 'yyyyMMdd')))
