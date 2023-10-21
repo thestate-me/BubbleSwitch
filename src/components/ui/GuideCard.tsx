@@ -1,7 +1,12 @@
 export default function GuideCard({ guide, city }: any) {
   return (
     <a href={`/${city.slug}/guide/${guide.slug}`}>
-      <div className='relative m-2 rounded-md border-2 border-gray-100 bg-[#D7E86C] p-4  py-20 text-center text-2xl font-bold'>
+      <div
+        style={{
+          textShadow: '1px 0px 5px rgba(0,0,0,1)',
+        }}
+        className='relative m-2 rounded-md border-2 border-gray-100 bg-[#D7E86C] p-4  py-20 text-center text-2xl font-bold'
+      >
         {guide.name}
         {/* {guide.communities && (
           <div className='absolute bottom-0 left-0 p-4 text-center  text-xl font-bold text-black'>

@@ -4,6 +4,7 @@ export default function CityCard({ city }: any) {
       <div
         style={{
           backgroundImage: `url(${city.cover})`,
+          textShadow: '1px 0px 5px rgba(0,0,0,1)',
         }}
         className={`relative m-2 rounded-md border-2 border-gray-100 bg-[#D7E86C] p-4  py-20 text-center text-2xl font-bold ${
           city.cover ? 'text-white' : 'text-black'
