@@ -136,7 +136,6 @@ export default function Page({
                     ) : community.nsfw ? (
                       <div className='text-center text-3xl font-bold'>
                         You should be 18+ to see the link
-                        {/* // TODO: прокинь сюда юзера  */}
                         {/* eslint-disable-next-line no-constant-condition */}
                         <div>
                           {userAddress ? (
